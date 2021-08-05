@@ -14,3 +14,14 @@
     group: influxdb
     mode: 0744
   when: influxdb_template_configuration
+
+- name: Check the startup script exists
+  stat:
+    path: /usr/lib/influxdb/scripts/influxd-systemd-start.sh
+  register: startup_script_stat
+
+- name: Fix the startup script permissions
+  file:
+    path: /usr/lib/influxdb/scripts/influxd-systemd-start.sh
+    mode: 0755
+  when: startup_script_stat.stat.exists
