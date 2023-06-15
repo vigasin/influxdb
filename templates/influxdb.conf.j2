@@ -84,13 +84,13 @@ reporting-disabled = {{ influxdb_disable_reporting }}
   # data-logging-enabled = true
 
 ###
-### [cluster]
+### [cordinator]
 ###
 ### Controls non-Raft cluster behavior, which generally includes how data is
 ### shared across shards.
 ###
 
-[cluster]
+[cordinator]
   shard-writer-timeout = "{{ influxdb_cluster_shard_writer_timeout }}"
   force-remote-mapping = {{ influxdb_cluster_force_remote_mapping }}
   write-timeout = "{{ influxdb_cluster_write_timeout }}"
@@ -190,6 +190,14 @@ reporting-disabled = {{ influxdb_disable_reporting }}
   ## Otherwise an error will be logged and the metric rejected.
   # ignore-unnamed = {{ influxdb_graphite_ignore_unnamed }}
 
+{% if influxdb_graphite_templates %}
+  templates = [
+{% for template in influxdb_graphite_templates %}
+    "{{ template }}",
+{% endfor %}
+  ]
+{% endif %}
+
 ###
 {% if influxdb_runtime_version is version('0.11', '>') %}
 ### [[collectd]]
@@ -241,18 +249,20 @@ reporting-disabled = {{ influxdb_disable_reporting }}
   # batch-timeout = "{{ influxdb_opentsdb_batch_timeout }}"
 
 ###
-### [udp]
+### [[udp]]
 ###
 ### Controls the listener for InfluxDB line protocol data via UDP.
 ###
 
   # TODO: Including the udp table prevents service from starting (even if disabled)
-  # [udp]
-  #   enabled = {{ influxdb_udp_enabled }}
+  # [[udp]]
+  # enabled = {{ influxdb_udp_enabled }}
   # bind-address = "{{ influxdb_udp_bind_address }}"
   # database = "{{ influxdb_udp_database }}"
   # batch-size = {{ influxdb_udp_batch_size }}
   # batch-timeout = "{{ influxdb_udp_batch_timeout }}"
+  # batch-pending = {{ influxdb_udp_batch_pending }} # number of batches that may be pending in memory
+  # read-buffer = {{ influxdb_udp_read_buffer }} # UDP read buffer size, 0 means to use OS default
 
 ###
 ### [continuous_queries]

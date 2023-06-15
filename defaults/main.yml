@@ -108,6 +108,7 @@ influxdb_graphite_batch_pending: 5
 influxdb_graphite_batch_timeout: 1s
 influxdb_graphite_name_schema: type.host.measurement.device
 influxdb_graphite_ignore_unnamed: "true"
+influxdb_graphite_templates: []
 
 ## Collectd Settings
 influxdb_collectd_enabled: "false"
@@ -137,6 +138,8 @@ influxdb_udp_bind_address: ""
 influxdb_udp_database: ""
 influxdb_udp_batch_size: 0
 influxdb_udp_batch_timeout: 0
+influxdb_udp_batch_pending: 10
+influxdb_udp_read_buffer: 0
 
 ## Monitoring Settings
 influxdb_monitoring_enabled: "true"
